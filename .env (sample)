@@ -1,0 +1,6 @@
+# sample .env file; set below variables and rename to .env
+WEBEX_TOKEN=<access token to be used by the script>
+# The better option is to not use WEBEX_TOKEN (remove that line from the script) and instead use a service app
+SERVICE_APP_CLIENT_ID=<client id of the service app>
+SERVICE_APP_CLIENT_SECRET=<client secret of the service app>
+SERVICE_APP_REFRESH_TOKEN=<initial refresh token of the service app>
