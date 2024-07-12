@@ -27,18 +27,17 @@ are cached in a YML file.
 
 ## Usage
 
-```bash
-./local_tp.py --help
-usage: local_tp.py [-h] --npa NPA --nxx NXX [--readonly] [--patternsonly] [--token TOKEN] [--location LOCATION]
-
-Provision translation patterns on Webex Caling for a given NPA NXX to make sure that NPA/NXXes considered local are treated accordingly.
-Location level Translation patterns matching on local NPA/NXXes are provisioned in given location.
-
-options:
-  -h, --help           show this help message and exit
-  --npa NPA            NPA of the GW location
-  --nxx NXX            NXX of the GW location
-  --readonly           Don\'t write to Webex Calling. Existing patterns are read if possible.
-  --patternsonly       Only print patterns required. No WxC token is required.
-  --token TOKEN        access token to access Webex Calling APIs
-  --location LOCATION  Location for the location level translation patterns.
+    ./local_tp.py --help
+    usage: local_tp.py [-h] --npa NPA --nxx NXX [--readonly] [--patternsonly] [--token TOKEN] [--location LOCATION]
+    
+    Provision translation patterns on Webex Caling for a given NPA NXX to make sure that NPA/NXXes considered local are treated accordingly.
+    Location level Translation patterns matching on local NPA/NXXes are provisioned in given location.
+    
+    options:
+      -h, --help           show this help message and exit
+      --npa NPA            NPA of the GW location
+      --nxx NXX            NXX of the GW location
+      --readonly           Don't write to Webex Calling. Existing patterns are read if possible.
+      --patternsonly       Only print patterns required. No WxC token is required.
+      --token TOKEN        access token to access Webex Calling APIs
+      --location LOCATION  Location for the location level translation patterns.
