@@ -38,7 +38,7 @@ options:
   -h, --help           show this help message and exit
   --npa NPA            NPA of the GW location
   --nxx NXX            NXX of the GW location
-  --readonly           Don't write to Webex Calling. Existing patterns are read if possible.
+  --readonly           Don\'t write to Webex Calling. Existing patterns are read if possible.
   --patternsonly       Only print patterns required. No WxC token is required.
   --token TOKEN        access token to access Webex Calling APIs
   --location LOCATION  Location for the location level translation patterns.
