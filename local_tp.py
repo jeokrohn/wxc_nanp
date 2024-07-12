@@ -110,8 +110,12 @@ def xmllocalprefix(npa: str, nxx: str) -> list[str]:
     if 'error' in data:
         print(f'Error retrieving local NPA/NXXes: {data["error"]}', file=sys.stderr)
         exit(1)
-    result = [f'{prefix["npa"]}{prefix["nxx"]}'
-              for prefix in data['lca-data']['prefix']]
+    try:
+        result = [f'{prefix["npa"]}{prefix["nxx"]}'
+                  for prefix in data['lca-data']['prefix']]
+    except KeyError as e:
+        print(f'Error parsing local NPA/NXXes: {e}', file=sys.stderr)
+        exit(1)
     return result
 
 
@@ -206,12 +210,14 @@ def main():
         to make sure that NPA/NXXes considered local are treated accordingly.
         Location level Translation patterns matching on local NPA/NXXes are provisioned in given location.""")
 
-    args.add_argument('--npa', required=True, help='NPA of the GW location')
-    args.add_argument('--nxx', required=True, help='NXX of the GW location')
+    args.add_argument('--npa', required=False, help='NPA of the GW location')
+    args.add_argument('--nxx', required=False, help='NXX of the GW location')
     args.add_argument('--readonly', required=False, action='store_true',
                       help='Don\'t write to Webex Calling. Existing patterns are read if possible.')
     args.add_argument('--patternsonly', required=False, action='store_true',
                       help='Only print patterns required. No WxC token is required.')
+    args.add_argument('--cleanup', required=False, action='store_true',
+                      help='Delete all TP_XXXXX translation patterns in location')
     args.add_argument('--token', required=False, help='access token to access Webex Calling APIs')
     args.add_argument('--location', required=False,
                       help='Location for the location level translation patterns.')
@@ -223,13 +229,20 @@ def main():
         exit(1)
 
     # get required translation patterns
-    required_patterns = get_patterns(npa=parsed_args.npa, nxx=parsed_args.nxx)
+    if parsed_args.cleanup:
+        required_patterns = []
+    else:
+        if not all((parsed_args.npa, parsed_args.nxx)):
+            print('error: --npa and --nxx parameters are required', file=sys.stderr)
+            exit(1)
+        required_patterns = get_patterns(npa=parsed_args.npa, nxx=parsed_args.nxx)
     print(f'{len(required_patterns)} patterns are required')
 
     # print required patterns
-    p_len = max(len(p.matching_pattern) for p in required_patterns)
-    print('\n'.join(f'{p.name:9}: {p.matching_pattern:{p_len}} -> {p.replacement_pattern}'
-                    for p in required_patterns))
+    if required_patterns:
+        p_len = max(len(p.matching_pattern) for p in required_patterns)
+        print('\n'.join(f'{p.name:9}: {p.matching_pattern:{p_len}} -> {p.replacement_pattern}'
+                        for p in required_patterns))
     if len(required_patterns) > 500:
         print('Too many TPs. Can not exceed 500.', file=sys.stderr)
         exit(1)
